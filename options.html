@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Настройки Obsidian Film Saver</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        .container {
+            max-width: 500px;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        h2 {
+            margin-top: 0;
+            color: #7e57c2;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            padding: 10px 15px;
+            background: #7e57c2;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        button:hover {
+            background: #673ab7;
+        }
+        .status {
+            margin-top: 15px;
+            color: green;
+            font-weight: bold;
+            display: none;
+        }
+        .info {
+            font-size: 13px;
+            color: #666;
+            margin-top: 5px;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Настройки</h2>
+        <div class="form-group">
+            <label for="apiKey">Local REST API Key (Ключ авторизации)</label>
+            <input type="password" id="apiKey" placeholder="Вставьте ключ из Obsidian здесь">
+            <span class="info">Ключ можно найти в настройках плагина Local REST API в Obsidian.</span>
+        </div>
+        <div class="form-group">
+            <label for="apiUrl">Адрес сервера (HTTP сервер)</label>
+            <input type="text" id="apiUrl" value="http://127.0.0.1:27123">
+        </div>
+        <div class="form-group">
+            <label for="basePath">Базовая папка в Obsidian</label>
+            <input type="text" id="basePath" value="Фильмы и Сериалы">
+            <span class="info">Папка, внутри которой скрипт будет искать папки "Фильмы" и "Сериалы"</span>
+        </div>
+        
+        <button id="saveBtn">Сохранить</button>
+        <div id="status" class="status">Настройки сохранены!</div>
+    </div>
+    <script src="options.js"></script>
+</body>
+</html>

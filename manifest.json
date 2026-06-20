@@ -1,0 +1,32 @@
+{
+  "manifest_version": 3,
+  "name": "Obsidian Film Saver",
+  "version": "2.0",
+  "description": "Автоматически добавляет кнопку для сохранения фильмов в Obsidian через Local REST API",
+  "options_page": "options.html",
+  "content_scripts": [
+    {
+      "matches": [
+        "https://rezka.ag/films/*",
+        "https://rezka.ag/series/*"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "run_at": "document_end"
+    }
+  ],
+  "permissions": [
+    "downloads",
+    "storage"
+  ],
+  "host_permissions": [
+    "https://rezka.ag/*",
+    "*://*.hdrezka.ac/*",
+    "*://*.hdrezka.me/*",
+    "http://127.0.0.1:27124/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  }
+}
