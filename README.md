@@ -1,6 +1,6 @@
 # Obsidian Film Saver
 
-A Google Chrome extension that allows you to save movies and TV series from **HDrezka** (rezka.ag) directly to your **Obsidian** knowledge base with a single click.
+A Google Chrome extension that allows you to save movies and series from **HDrezka** (rezka.ag) directly to your **Obsidian** knowledge base with a single click.
 
 ## Features
 - Automatically scrapes movie/series metadata (title, year, genres, countries, directors, actors, IMDb & Kinopoisk ratings).
