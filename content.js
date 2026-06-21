@@ -50,29 +50,53 @@
             const modal = document.createElement('div');
             modal.style.cssText = `
                 background: #222; padding: 25px; border-radius: 12px;
-                box-shadow: 0 10px 30px rgba(0,0,0,0.5); width: 320px;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.5); width: 340px;
                 color: #fff; text-align: center; border: 1px solid #444;
             `;
 
             const header = document.createElement('h3');
-            header.textContent = 'Оцените фильм/сериал';
+            header.textContent = 'Сохранение в Obsidian';
             header.style.cssText = 'margin: 0 0 10px 0; font-size: 18px; color: #fff; font-weight: bold;';
 
             const desc = document.createElement('p');
             desc.textContent = `«${title}»`;
             desc.style.cssText = 'margin: 0 0 20px 0; font-size: 14px; color: #aaa; line-height: 1.4;';
 
-            const input = document.createElement('input');
-            input.type = 'text';
-            input.placeholder = `По умолчанию: ${defaultRating || '-'}`;
-            input.style.cssText = `
+            const inputRating = document.createElement('input');
+            inputRating.type = 'text';
+            inputRating.placeholder = `Оценка (По умолчанию: ${defaultRating || '-'})`;
+            inputRating.style.cssText = `
                 width: 100%; padding: 12px; box-sizing: border-box;
                 border-radius: 6px; border: 1px solid #555; background: #111;
-                color: #fff; font-size: 16px; margin-bottom: 20px; text-align: center;
+                color: #fff; font-size: 16px; margin-bottom: 12px; text-align: center;
                 outline: none; transition: border-color 0.2s;
             `;
-            input.onfocus = () => input.style.borderColor = '#7e57c2';
-            input.onblur = () => input.style.borderColor = '#555';
+            inputRating.onfocus = () => inputRating.style.borderColor = '#7e57c2';
+            inputRating.onblur = () => inputRating.style.borderColor = '#555';
+
+            const inputDate = document.createElement('input');
+            inputDate.type = 'date';
+            inputDate.value = new Date().toISOString().split('T')[0];
+            inputDate.style.cssText = `
+                width: 100%; padding: 12px; box-sizing: border-box;
+                border-radius: 6px; border: 1px solid #555; background: #111;
+                color: #fff; font-size: 16px; margin-bottom: 12px; text-align: center;
+                outline: none; transition: border-color 0.2s; color-scheme: dark;
+            `;
+            inputDate.onfocus = () => inputDate.style.borderColor = '#7e57c2';
+            inputDate.onblur = () => inputDate.style.borderColor = '#555';
+
+            const inputComment = document.createElement('textarea');
+            inputComment.placeholder = 'Ваш комментарий (необязательно)';
+            inputComment.style.cssText = `
+                width: 100%; padding: 12px; box-sizing: border-box;
+                border-radius: 6px; border: 1px solid #555; background: #111;
+                color: #fff; font-size: 14px; margin-bottom: 20px; text-align: left;
+                outline: none; transition: border-color 0.2s; resize: vertical; min-height: 80px;
+                font-family: Arial, sans-serif;
+            `;
+            inputComment.onfocus = () => inputComment.style.borderColor = '#7e57c2';
+            inputComment.onblur = () => inputComment.style.borderColor = '#555';
 
             const btnContainer = document.createElement('div');
             btnContainer.style.cssText = 'display: flex; gap: 10px; justify-content: space-between;';
@@ -101,24 +125,39 @@
             btnContainer.appendChild(btnSubmit);
             modal.appendChild(header);
             modal.appendChild(desc);
-            modal.appendChild(input);
+            modal.appendChild(inputRating);
+            modal.appendChild(inputDate);
+            modal.appendChild(inputComment);
             modal.appendChild(btnContainer);
             backdrop.appendChild(modal);
             document.body.appendChild(backdrop);
 
-            input.focus();
+            inputRating.focus();
 
-            const closeAndResolve = (val) => {
+            const closeAndResolve = (isSubmit) => {
                 document.body.removeChild(backdrop);
-                resolve(val);
+                if (isSubmit) {
+                    resolve({
+                        rating: inputRating.value,
+                        date: inputDate.value,
+                        comment: inputComment.value
+                    });
+                } else {
+                    resolve(null);
+                }
             };
 
-            btnCancel.onclick = () => closeAndResolve(null);
-            btnSubmit.onclick = () => closeAndResolve(input.value);
-            input.onkeydown = (e) => {
-                if (e.key === 'Enter') closeAndResolve(input.value);
-                if (e.key === 'Escape') closeAndResolve(null);
+            btnCancel.onclick = () => closeAndResolve(false);
+            btnSubmit.onclick = () => closeAndResolve(true);
+            
+            const handleKeydown = (e) => {
+                if (e.key === 'Enter' && e.target !== inputComment) closeAndResolve(true);
+                if (e.key === 'Escape') closeAndResolve(false);
             };
+
+            inputRating.onkeydown = handleKeydown;
+            inputDate.onkeydown = handleKeydown;
+            inputComment.onkeydown = handleKeydown;
         });
     }
 
@@ -260,18 +299,40 @@
             }
 
             // Оценка (запрос у пользователя)
+            let finalDate = new Date().toISOString().split('T')[0];
+            let finalComment = '';
+
             if (!onlyPoster) {
-                const userRating = await askUserRating(title, overallRating);
-                if (userRating !== null && userRating.trim() !== "") {
-                    content += `Оценка: "[[${userRating.trim()}]]"\n`;
+                const userResponse = await askUserRating(title, overallRating);
+                if (userResponse !== null) {
+                    const ratingStr = userResponse.rating.trim();
+                    if (ratingStr !== "") {
+                        content += `Оценка: "[[${ratingStr}]]"\n`;
+                    } else if (overallRating) {
+                        content += `Оценка: "[[${overallRating}]]"\n`;
+                    }
+
+                    if (userResponse.date) {
+                        finalDate = userResponse.date;
+                    }
+                    if (userResponse.comment.trim() !== "") {
+                        finalComment = userResponse.comment.trim();
+                    }
                 } else if (overallRating) {
                     content += `Оценка: "[[${overallRating}]]"\n`;
                 }
+            } else if (overallRating) {
+                content += `Оценка: "[[${overallRating}]]"\n`;
             }
 
             // Дата добавления
-            const today = new Date().toISOString().split('T')[0];
-            content += `Когда: ${today}\n`;
+            content += `Когда: ${finalDate}\n`;
+
+            // Комментарий
+            if (finalComment) {
+                const safeComment = finalComment.replace(/"/g, '\\"').replace(/\n/g, ' ');
+                content += `Комментарий: "${safeComment}"\n`;
+            }
 
             // Настройка имени постера
             const posterName = `${title.toLowerCase().replace(/[^a-z0-9а-яё]/g, '-')}-${year}.jpg`;
