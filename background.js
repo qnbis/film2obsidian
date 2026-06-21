@@ -46,21 +46,35 @@ async function saveToObsidian(request) {
     }
 
     // 1. Загрузка постера
+    let posterWarning = '';
     if (request.posterUrl) {
         try {
-            const imgRes = await fetch(request.posterUrl);
-            if (!imgRes.ok) throw new Error(`Не удалось скачать картинку с сайта: HTTP ${imgRes.status}`);
+            // Используем кэш браузера, так как картинка уже загружена на странице,
+            // и прерываем запрос через 8 секунд, если интернет висит
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 8000);
+
+            const imgRes = await fetch(request.posterUrl, { 
+                cache: "force-cache",
+                signal: controller.signal
+            });
+            clearTimeout(timeoutId);
+
+            if (!imgRes.ok) throw new Error(`HTTP ${imgRes.status}`);
             const imgBlob = await imgRes.blob();
             
             const posterPath = `${basePath}${request.folder}/Постеры/${request.posterFilename}`;
             await uploadFile(posterPath, imgBlob, imgBlob.type || 'image/jpeg');
         } catch (e) {
             console.warn("Не удалось загрузить постер:", e);
-            throw new Error("Сбой при сохранении постера: " + e.message);
+            posterWarning = "\n(Внимание: постер не сохранен из-за ошибки сети/таймаута)";
         }
     }
 
     if (request.onlyPoster) {
+        if (posterWarning) {
+            return { success: false, error: "Не удалось сохранить постер: превышено время ожидания или ошибка сети." };
+        }
         return { success: true, message: "Постер успешно сохранен в Obsidian!" };
     }
 
@@ -70,5 +84,5 @@ async function saveToObsidian(request) {
         await uploadFile(mdPath, request.markdownContent, 'text/markdown');
     }
 
-    return { success: true, message: "Успешно сохранено в Obsidian!" };
+    return { success: true, message: "Успешно сохранено в Obsidian!" + posterWarning };
 }
