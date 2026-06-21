@@ -15,8 +15,7 @@ A Google Chrome extension that allows you to save movies and series from **HDrez
 - Automatically scrapes movie/series metadata (title, year, genres, countries, directors, actors, IMDb & Kinopoisk ratings).
 - Beautiful custom modal to input your personal rating.
 - Downloads the movie poster/cover automatically.
-- Seamlessly sends the `.md` note and poster file directly to your Obsidian Vault via local network (no downloads folder clutter or "Save As" popups).
-- Success animation on the save button.
+- Seamlessly sends the `.md` note and poster file directly to your Obsidian Vault via local network.
 
 ## How it works?
 The extension utilizes the **Local REST API** plugin to communicate with Obsidian directly. You click the button on the site -> the extension generates a note -> sends the files straight to your Obsidian Vault.
