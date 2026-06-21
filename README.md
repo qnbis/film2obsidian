@@ -1,13 +1,9 @@
 <div align="center">
 
-![License MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
-![Python 3.10+](https://img.shields.io/badge/Python-3.10+-blue.svg)
-![Claude Code Skill](https://img.shields.io/badge/Claude_Code-Skill-blueviolet.svg)
-![Codex AGENTS.md](https://img.shields.io/badge/Codex-AGENTS.md-brightgreen.svg)
-![NotebookLM API Control](https://img.shields.io/badge/NotebookLM-API_Control-orange.svg)
-![LLM Wiki Compiled Knowledge](https://img.shields.io/badge/LLM_Wiki-Compiled_Knowledge-teal.svg)
-
-![FTS5 Vault Memory](https://img.shields.io/badge/FTS5-Vault_Memory-lightblue.svg)
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=black)
+![Google Chrome](https://img.shields.io/badge/Google_Chrome-4285F4?logo=google-chrome&logoColor=white)
+![Obsidian](https://img.shields.io/badge/Obsidian-483699?logo=obsidian&logoColor=white)
+![HTML5](https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white)
 
 </div>
 
@@ -15,7 +11,7 @@
 
 <div align="center">
 
-🇬🇧 [Read this in English → README.en.md](./README.en.md)
+🇺🇸 [Read this in English](./README.en.md)
 
 </div>
 
