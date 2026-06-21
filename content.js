@@ -389,9 +389,11 @@
             }, (response) => {
                 if (chrome.runtime.lastError) {
                     showError('Ошибка связи с расширением: ' + chrome.runtime.lastError.message);
-                } else if (response && !response.success) {
+                } else if (!response) {
+                    showError('Неизвестная ошибка: пустой ответ от расширения.');
+                } else if (!response.success) {
                     showError('Ошибка при сохранении в Obsidian:\n' + response.error);
-                } else if (response && response.success) {
+                } else if (response.success) {
                     console.log(response.message);
                     
                     if (onlyPoster) {
