@@ -6,8 +6,43 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
             sendResponse({ success: false, error: err.message });
         });
         return true; // Указываем, что ответ будет асинхронным
+    } else if (request.action === 'checkFileExists') {
+        checkFileExists(request).then(exists => {
+            sendResponse({ success: true, exists: exists });
+        }).catch(err => {
+            sendResponse({ success: false, error: err.message });
+        });
+        return true;
     }
 });
+
+async function checkFileExists(request) {
+    const items = await chrome.storage.local.get({
+        apiKey: '',
+        apiUrl: 'http://127.0.0.1:27123',
+        basePath: 'Фильмы и Сериалы'
+    });
+
+    if (!items.apiKey) return false;
+
+    const authHeader = `Bearer ${items.apiKey}`;
+    const baseUrl = items.apiUrl.replace(/\/$/, '');
+    const basePath = items.basePath ? `${items.basePath.replace(/\/$/, '')}/` : '';
+    
+    const mdPath = `${basePath}${request.folder}/${request.mdFilename}`;
+    const encodedPath = mdPath.split('/').map(encodeURIComponent).join('/');
+    const url = `${baseUrl}/vault/${encodedPath}`;
+    
+    try {
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: { 'Authorization': authHeader }
+        });
+        return response.ok;
+    } catch (e) {
+        return false;
+    }
+}
 
 async function saveToObsidian(request) {
     const items = await chrome.storage.local.get({

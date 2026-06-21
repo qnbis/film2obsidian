@@ -37,7 +37,7 @@
         display: none;
     `;
 
-    function askUserRating(title, defaultRating) {
+    function askUserRating(title, defaultRating, fileExists = false) {
         return new Promise((resolve) => {
             const backdrop = document.createElement('div');
             backdrop.style.cssText = `
@@ -55,8 +55,13 @@
             `;
 
             const header = document.createElement('h3');
-            header.textContent = 'Сохранение в Obsidian';
-            header.style.cssText = 'margin: 0 0 10px 0; font-size: 18px; color: #fff; font-weight: bold;';
+            if (fileExists) {
+                header.textContent = 'Уже сохранено. Обновить данные?';
+                header.style.cssText = 'margin: 0 0 10px 0; font-size: 18px; color: #ff9800; font-weight: bold;';
+            } else {
+                header.textContent = 'Сохранение в Obsidian';
+                header.style.cssText = 'margin: 0 0 10px 0; font-size: 18px; color: #fff; font-weight: bold;';
+            }
 
             const desc = document.createElement('p');
             desc.textContent = `«${title}»`;
@@ -112,14 +117,14 @@
             btnCancel.onmouseout = () => btnCancel.style.background = '#444';
 
             const btnSubmit = document.createElement('button');
-            btnSubmit.textContent = 'Сохранить';
+            btnSubmit.textContent = fileExists ? 'Обновить' : 'Сохранить';
             btnSubmit.style.cssText = `
                 flex: 1; padding: 12px; border: none; border-radius: 6px;
-                background: #7e57c2; color: #fff; cursor: pointer; font-size: 14px;
+                background: ${fileExists ? '#ff9800' : '#7e57c2'}; color: #fff; cursor: pointer; font-size: 14px;
                 font-weight: bold; transition: background 0.2s;
             `;
-            btnSubmit.onmouseover = () => btnSubmit.style.background = '#673ab7';
-            btnSubmit.onmouseout = () => btnSubmit.style.background = '#7e57c2';
+            btnSubmit.onmouseover = () => btnSubmit.style.background = fileExists ? '#f57c00' : '#673ab7';
+            btnSubmit.onmouseout = () => btnSubmit.style.background = fileExists ? '#ff9800' : '#7e57c2';
 
             btnContainer.appendChild(btnCancel);
             btnContainer.appendChild(btnSubmit);
@@ -313,12 +318,30 @@
                 });
             }
 
+            // Очищаем название для имени файла
+            const cleanTitle = title.replace(/[<>:"/\\|?*]/g, '');
+            const mdFilename = `${cleanTitle} (${year}).md`;
+
             // Оценка (запрос у пользователя)
             let finalDate = new Date().toISOString().split('T')[0];
             let finalComment = '';
 
             if (!onlyPoster) {
-                const userResponse = await askUserRating(title, overallRating);
+                let fileExists = false;
+                try {
+                    const checkRes = await new Promise((resolve) => {
+                        chrome.runtime.sendMessage({
+                            action: 'checkFileExists',
+                            folder: folder,
+                            mdFilename: mdFilename
+                        }, resolve);
+                    });
+                    if (checkRes && checkRes.exists) {
+                        fileExists = true;
+                    }
+                } catch(e) {}
+
+                const userResponse = await askUserRating(title, overallRating, fileExists);
                 if (userResponse !== null) {
                     const ratingStr = userResponse.rating.trim();
                     if (ratingStr !== "") {
@@ -365,10 +388,6 @@
                 showError('Не удалось найти обложку на странице.');
                 return;
             }
-
-            // Очищаем название для имени файла
-            const cleanTitle = title.replace(/[<>:"/\\|?*]/g, '');
-            const mdFilename = `${cleanTitle} (${year}).md`;
 
             // Показываем пользователю, что пошел процесс
             if (onlyPoster) {
