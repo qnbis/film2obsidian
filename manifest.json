@@ -24,8 +24,15 @@
     "https://rezka.ag/*",
     "*://*.hdrezka.ac/*",
     "*://*.hdrezka.me/*",
+    "http://127.0.0.1:27123/*",
     "http://127.0.0.1:27124/*"
   ],
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "film2obsidian@qnbis",
+      "strict_min_version": "121.0"
+    }
+  },
   "background": {
     "service_worker": "background.js"
   }
