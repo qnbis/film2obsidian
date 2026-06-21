@@ -7,16 +7,6 @@
 
 </div>
 
----
-
-<div align="center">
-
-🇷🇺 [Читать на русском](./README.md)
-
-</div>
-
----
-
 # Obsidian Film Saver
 
 A Google Chrome extension that allows you to save movies and series from **HDrezka** (rezka.ag) directly to your **Obsidian** knowledge base with a single click.

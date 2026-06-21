@@ -5,17 +5,11 @@
 ![Obsidian](https://img.shields.io/badge/Obsidian-483699?logo=obsidian&logoColor=white)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white)
 
-</div>
-
----
-
-<div align="center">
+<br>
 
 🇺🇸 [Read this in English](./README.en.md)
 
 </div>
-
----
 
 # Obsidian Film Saver
 
