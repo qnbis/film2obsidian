@@ -102,7 +102,7 @@
             btnContainer.style.cssText = 'display: flex; gap: 10px; justify-content: space-between;';
 
             const btnCancel = document.createElement('button');
-            btnCancel.textContent = 'Пропустить';
+            btnCancel.textContent = 'Отменить';
             btnCancel.style.cssText = `
                 flex: 1; padding: 12px; border: none; border-radius: 6px;
                 background: #444; color: #fff; cursor: pointer; font-size: 14px;
@@ -162,6 +162,21 @@
     }
 
     const handleSave = async function (onlyPoster) {
+        // Запоминаем изначальный вид кнопок
+        const originalBtnText = button.textContent;
+        const originalPosterBtnText = buttonPoster.textContent;
+
+        const showError = (msg) => {
+            console.error(msg);
+            const btn = onlyPoster ? buttonPoster : button;
+            btn.textContent = 'Ошибка!';
+            btn.style.background = '#f44336';
+            setTimeout(() => {
+                btn.textContent = onlyPoster ? originalPosterBtnText : originalBtnText;
+                btn.style.background = onlyPoster ? '#26a69a' : '#7e57c2';
+            }, 3000);
+        };
+
         try {
             // Определяем тип (фильм или сериал)
             const isSeries = window.location.href.includes('https://rezka.ag/series/');
@@ -174,7 +189,7 @@
                 document.querySelector('.b-post__description');
 
             if (!infoContainer) {
-                alert('Не найден контейнер с информацией о фильме');
+                showError('Не найден контейнер с информацией о фильме');
                 return;
             }
 
@@ -318,8 +333,9 @@
                     if (userResponse.comment.trim() !== "") {
                         finalComment = userResponse.comment.trim();
                     }
-                } else if (overallRating) {
-                    content += `Оценка: "[[${overallRating}]]"\n`;
+                } else {
+                    // Пользователь нажал "Отменить"
+                    return; 
                 }
             } else if (overallRating) {
                 content += `Оценка: "[[${overallRating}]]"\n`;
@@ -346,7 +362,7 @@
             const posterUrl = imgElement ? imgElement.src : null;
 
             if (!posterUrl && onlyPoster) {
-                alert('Не удалось найти обложку на странице.');
+                showError('Не удалось найти обложку на странице.');
                 return;
             }
 
@@ -355,8 +371,6 @@
             const mdFilename = `${cleanTitle} (${year}).md`;
 
             // Показываем пользователю, что пошел процесс
-            const originalBtnText = button.textContent;
-            const originalPosterBtnText = buttonPoster.textContent;
             if (onlyPoster) {
                 buttonPoster.textContent = 'Сохранение...';
             } else {
@@ -374,15 +388,9 @@
                 mdFilename: mdFilename
             }, (response) => {
                 if (chrome.runtime.lastError) {
-                    button.textContent = originalBtnText;
-                    buttonPoster.textContent = originalPosterBtnText;
-                    alert('Ошибка связи с расширением: ' + chrome.runtime.lastError.message);
-                    console.error(chrome.runtime.lastError);
+                    showError('Ошибка связи с расширением: ' + chrome.runtime.lastError.message);
                 } else if (response && !response.success) {
-                    button.textContent = originalBtnText;
-                    buttonPoster.textContent = originalPosterBtnText;
-                    alert('Ошибка при сохранении в Obsidian:\n' + response.error);
-                    console.error(response.error);
+                    showError('Ошибка при сохранении в Obsidian:\n' + response.error);
                 } else if (response && response.success) {
                     console.log(response.message);
                     
@@ -418,7 +426,7 @@
 
         } catch (error) {
             console.error('Ошибка при сохранении:', error);
-            alert('Произошла ошибка при сохранении. Проверьте консоль для подробностей.');
+            showError('Произошла ошибка при сохранении. Проверьте консоль для подробностей.');
         }
     };
 
