@@ -4,38 +4,47 @@
     const button = document.createElement('button');
     button.textContent = 'Сохранить в Obsidian';
     button.style.cssText = `
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        z-index: 10000;
+        display: block;
+        width: 100%;
+        margin-top: 10px;
         padding: 10px 15px;
         background: #7e57c2;
         color: white;
         border: none;
-        border-radius: 5px;
+        border-radius: 2px;
         cursor: pointer;
         font-size: 14px;
+        font-weight: bold;
         font-family: Arial, sans-serif;
+        box-sizing: border-box;
+        text-align: center;
+        transition: background 0.2s;
     `;
+    button.onmouseover = () => button.style.background = '#673ab7';
+    button.onmouseout = () => button.style.background = '#7e57c2';
 
     // Создаем вторую кнопку для скачивания только постера
     const buttonPoster = document.createElement('button');
     buttonPoster.textContent = 'Скачать только постер';
     buttonPoster.style.cssText = `
-        position: fixed;
-        top: 65px;
-        right: 20px;
-        z-index: 10000;
+        display: none;
+        width: 100%;
+        margin-top: 5px;
         padding: 10px 15px;
         background: #26a69a;
         color: white;
         border: none;
-        border-radius: 5px;
+        border-radius: 2px;
         cursor: pointer;
         font-size: 14px;
+        font-weight: bold;
         font-family: Arial, sans-serif;
-        display: none;
+        box-sizing: border-box;
+        text-align: center;
+        transition: background 0.2s;
     `;
+    buttonPoster.onmouseover = () => buttonPoster.style.background = '#00897b';
+    buttonPoster.onmouseout = () => buttonPoster.style.background = '#26a69a';
 
     function askUserRating(title, defaultRating, fileExists = false) {
         return new Promise((resolve) => {
@@ -455,8 +464,34 @@
     buttonPoster.onclick = () => handleSave(true);
 
     // Добавляем кнопки на страницу
-    document.body.appendChild(button);
-    document.body.appendChild(buttonPoster);
+    const findAndAppend = () => {
+        // Ищем кнопку "Смотреть трейлер"
+        let trailerBtn = Array.from(document.querySelectorAll('button, a, div')).find(el => {
+            return (el.tagName === 'BUTTON' || el.tagName === 'A' || el.classList.contains('b-post__trailer')) && 
+                   el.textContent && el.textContent.trim().includes('Смотреть трейлер') && 
+                   el.children.length <= 2; // чтобы не захватить родительские контейнеры
+        });
 
-    console.log('Скрипт загружен! Кнопки добавлены в правый верхний угол.');
+        let container = null;
+        if (trailerBtn) {
+            container = trailerBtn.parentNode;
+        } else {
+            // Фолбэк: ищем блок под постером
+            container = document.querySelector('.b-post__misk') || 
+                        document.querySelector('.b-sidecover') || 
+                        (document.querySelector('img[itemprop="image"]') ? document.querySelector('img[itemprop="image"]').parentNode : null);
+        }
+
+        if (container) {
+            container.appendChild(button);
+            container.appendChild(buttonPoster);
+        } else {
+            document.body.appendChild(button);
+            document.body.appendChild(buttonPoster);
+        }
+    };
+
+    findAndAppend();
+
+    console.log('Скрипт загружен! Кнопки добавлены под постер.');
 })();
