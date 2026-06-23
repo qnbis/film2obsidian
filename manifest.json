@@ -4,6 +4,20 @@
   "version": "2.0",
   "description": "Автоматически добавляет кнопку для сохранения фильмов в Obsidian через Local REST API",
   "options_page": "options.html",
+  "icons": {
+    "16": "f2o_logo_16.png",
+    "32": "f2o_logo_32.png",
+    "48": "f2o_logo_48.png",
+    "128": "f2o_logo_128.png"
+  },
+  "action": {
+    "default_icon": {
+      "16": "f2o_logo_16.png",
+      "32": "f2o_logo_32.png",
+      "48": "f2o_logo_48.png",
+      "128": "f2o_logo_128.png"
+    }
+  },
   "content_scripts": [
     {
       "matches": [
