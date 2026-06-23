@@ -231,11 +231,10 @@ async function generateBaseFile() {
     // Функция из background.js для загрузки
     const url = `${baseUrl}/vault/${filePath.split('/').map(encodeURIComponent).join('/')}`;
     const response = await fetch(url, {
-        method: 'POST',
+        method: 'PUT',
         headers: {
             'Authorization': authHeader,
-            'Content-Type': 'text/plain',
-            'File-Builder': 'true'
+            'Content-Type': 'text/plain'
         },
         body: yamlContent
     });
