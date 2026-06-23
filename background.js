@@ -218,11 +218,10 @@ async function generateBaseFile() {
     imageFit: cover
     filters:
       or:
-        - file.inFolder("Фильмы")
-        - file.inFolder("Сериалы")
+        - 'file.inFolder("Фильмы")'
+        - 'file.inFolder("Сериалы")'
     order:
-      - property: note.Когда
-        direction: DESC
+      - note.Когда
 `;
 
     // Создаем файл "Кинозал.base" в basePath (или в корне)
