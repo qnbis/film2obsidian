@@ -232,6 +232,9 @@ ${filterFolders}
       - Год
       - Рейтинг
       - Жанр
+    sort:
+      - property: Когда
+        direction: DESC
 `;
 
     // Создаем файл "Кинозал.base" в basePath (или в корне)
