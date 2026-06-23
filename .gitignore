@@ -1,0 +1,4 @@
+*.html
+!options.html
+*_files/
+.DS_Store
