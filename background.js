@@ -26,7 +26,13 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         // Для вкладки, открывающей obsidian://, можно попробовать сразу ее закрыть,
         // но Chrome может не успеть передать URI приложению, если закрыть мгновенно.
         sendResponse({ success: true });
-        return false;
+    } else if (request.action === 'generateBaseFile') {
+        generateBaseFile().then(result => {
+            sendResponse(result);
+        }).catch(err => {
+            sendResponse({ success: false, error: err.message });
+        });
+        return true;
     }
 });
 
@@ -188,4 +194,58 @@ async function deleteFile(request) {
     await chrome.storage.local.set({ recentMovies: recent });
     
     return { success: true };
+}
+
+async function generateBaseFile() {
+    const items = await chrome.storage.local.get({
+        apiKey: '',
+        apiUrl: 'http://127.0.0.1:27123',
+        basePath: 'Фильмы и Сериалы'
+    });
+
+    if (!items.apiKey) {
+        throw new Error('API Key не настроен.');
+    }
+
+    const authHeader = `Bearer ${items.apiKey}`;
+    const baseUrl = items.apiUrl.replace(/\/$/, '');
+    const basePath = items.basePath ? `${items.basePath.replace(/\/$/, '')}/` : '';
+    
+    const yamlContent = `views:
+  - type: cards
+    name: "Кинозал (HDrezka)"
+    imageProperty: note.Постер
+    imageFit: cover
+    filters:
+      or:
+        - file.inFolder("Фильмы")
+        - file.inFolder("Сериалы")
+    order:
+      - property: note.Когда
+        direction: DESC
+`;
+
+    // Создаем файл "Кинозал.base" в basePath (или в корне)
+    const fileName = "Кинозал.base";
+    const filePath = basePath ? `${basePath}/${fileName}` : fileName;
+    
+    // Функция из background.js для загрузки
+    const url = `${baseUrl}/vault/${filePath.split('/').map(encodeURIComponent).join('/')}`;
+    const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Authorization': authHeader,
+            'Content-Type': 'text/plain',
+            'File-Builder': 'true'
+        },
+        body: yamlContent
+    });
+
+    if (!response.ok && response.status !== 204) {
+        let errText = '';
+        try { errText = await response.text(); } catch(e) {}
+        throw new Error(`Ошибка при создании базы (${response.status}): ${errText}`);
+    }
+
+    return { success: true, message: "Файл Кинозал.base успешно сгенерирован!" };
 }

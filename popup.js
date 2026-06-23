@@ -62,4 +62,29 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     renderMovies();
+
+    const btnGenerateBase = document.getElementById('btnGenerateBase');
+    if (btnGenerateBase) {
+        btnGenerateBase.addEventListener('click', () => {
+            const originalText = btnGenerateBase.textContent;
+            btnGenerateBase.textContent = 'Создание...';
+            btnGenerateBase.disabled = true;
+
+            chrome.runtime.sendMessage({ action: 'generateBaseFile' }, (response) => {
+                if (response && response.success) {
+                    btnGenerateBase.textContent = 'Готово! ✓';
+                    btnGenerateBase.style.backgroundColor = '#4CAF50';
+                    setTimeout(() => {
+                        btnGenerateBase.textContent = originalText;
+                        btnGenerateBase.style.backgroundColor = '#7e57c2';
+                        btnGenerateBase.disabled = false;
+                    }, 2000);
+                } else {
+                    alert('Ошибка: ' + (response ? response.error : 'Неизвестная ошибка'));
+                    btnGenerateBase.textContent = originalText;
+                    btnGenerateBase.disabled = false;
+                }
+            });
+        });
+    }
 });
