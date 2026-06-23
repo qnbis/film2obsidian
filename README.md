@@ -38,7 +38,8 @@
    - **Включите настройку:** `Enable Non-Encrypted (HTTP) Server` (Включить незашифрованный сервер).
    - **Скопируйте `API Key`**, который там написан (копируйте **только сам ключ**, без слова `Bearer`).
 
-     ![Как правильно копировать токен](./assets/wrong_right.png)
+     <img width="580" height="82" alt="wrong_right" src="https://github.com/user-attachments/assets/4b89c29e-e35e-44a6-b0b0-f1add99e7c50" />
+
 
 ### 2. Установка расширения
 
