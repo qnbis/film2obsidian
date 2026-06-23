@@ -12,6 +12,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         }).catch(err => {
             sendResponse({ success: false, error: err.message });
         });
+        return true;
     } else if (request.action === 'deleteFile') {
         deleteFile(request).then(result => {
             sendResponse(result);
