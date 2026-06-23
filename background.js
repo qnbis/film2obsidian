@@ -220,7 +220,7 @@ async function generateBaseFile() {
     const yamlContent = `views:
   - type: cards
     name: "Кинозал (HDrezka)"
-    imageProperty: note.Постер
+    imageProperty: Постер
     imageFit: cover
     filters:
       and:
@@ -228,7 +228,10 @@ async function generateBaseFile() {
         - or:
 ${filterFolders}
     order:
-      - note.Когда
+      - file.name
+      - Год
+      - Рейтинг
+      - Жанр
 `;
 
     // Создаем файл "Кинозал.base" в basePath (или в корне)
