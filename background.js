@@ -209,18 +209,18 @@ async function generateBaseFile() {
 
     const authHeader = `Bearer ${items.apiKey}`;
     const baseUrl = items.apiUrl.replace(/\/$/, '');
-    const basePath = items.basePath ? `${items.basePath.replace(/\/$/, '')}/` : '';
+    const basePathClean = items.basePath ? items.basePath.replace(/\/$/, '') : '';
     
-    const filterFolders = basePath 
-        ? `            - 'file.inFolder("${basePath}/Фильмы")'
-            - 'file.inFolder("${basePath}/Сериалы")'`
+    const filterFolders = basePathClean 
+        ? `            - 'file.inFolder("${basePathClean}/Фильмы")'
+            - 'file.inFolder("${basePathClean}/Сериалы")'`
         : `            - 'file.inFolder("Фильмы")'
             - 'file.inFolder("Сериалы")'`;
 
     const yamlContent = `views:
   - type: cards
     name: "Кинозал (HDrezka)"
-    imageProperty: Постер
+    image: note.Постер
     imageFit: cover
     filters:
       and:
@@ -236,7 +236,7 @@ ${filterFolders}
 
     // Создаем файл "Кинозал.base" в basePath (или в корне)
     const fileName = "Кинозал.base";
-    const filePath = basePath ? `${basePath}/${fileName}` : fileName;
+    const filePath = basePathClean ? `${basePathClean}/${fileName}` : fileName;
     
     // Функция из background.js для загрузки
     const url = `${baseUrl}/vault/${filePath.split('/').map(encodeURIComponent).join('/')}`;
