@@ -2,3 +2,4 @@
 !options.html
 *_files/
 .DS_Store
+!popup.html
