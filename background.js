@@ -212,10 +212,10 @@ async function generateBaseFile() {
     const basePath = items.basePath ? `${items.basePath.replace(/\/$/, '')}/` : '';
     
     const filterFolders = basePath 
-        ? `        - 'file.inFolder("${basePath}/Фильмы")'
-        - 'file.inFolder("${basePath}/Сериалы")'`
-        : `        - 'file.inFolder("Фильмы")'
-        - 'file.inFolder("Сериалы")'`;
+        ? `            - 'file.inFolder("${basePath}/Фильмы")'
+            - 'file.inFolder("${basePath}/Сериалы")'`
+        : `            - 'file.inFolder("Фильмы")'
+            - 'file.inFolder("Сериалы")'`;
 
     const yamlContent = `views:
   - type: cards
