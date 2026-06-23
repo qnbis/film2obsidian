@@ -65,6 +65,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const btnGenerateBase = document.getElementById('btnGenerateBase');
     if (btnGenerateBase) {
+        // Проверяем, существует ли уже база
+        chrome.runtime.sendMessage({ 
+            action: 'checkFileExists', 
+            folder: '', 
+            mdFilename: 'Кинозал.base' 
+        }, (response) => {
+            if (response && response.exists) {
+                btnGenerateBase.textContent = 'База уже создана';
+                btnGenerateBase.disabled = true;
+            }
+        });
+
         btnGenerateBase.addEventListener('click', () => {
             const originalText = btnGenerateBase.textContent;
             btnGenerateBase.textContent = 'Создание...';
@@ -75,9 +87,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     btnGenerateBase.textContent = 'Готово! ✓';
                     btnGenerateBase.style.backgroundColor = '#4CAF50';
                     setTimeout(() => {
-                        btnGenerateBase.textContent = originalText;
+                        btnGenerateBase.textContent = 'База создана';
                         btnGenerateBase.style.backgroundColor = '#7e57c2';
-                        btnGenerateBase.disabled = false;
+                        // Оставляем кнопку неактивной, так как база теперь существует
                     }, 2000);
                 } else {
                     alert('Ошибка: ' + (response ? response.error : 'Неизвестная ошибка'));

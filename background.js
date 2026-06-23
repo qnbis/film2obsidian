@@ -49,7 +49,8 @@ async function checkFileExists(request) {
     const baseUrl = items.apiUrl.replace(/\/$/, '');
     const basePath = items.basePath ? `${items.basePath.replace(/\/$/, '')}/` : '';
     
-    const mdPath = `${basePath}${request.folder}/${request.mdFilename}`;
+    const folderPath = request.folder ? `${request.folder}/` : '';
+    const mdPath = `${basePath}${folderPath}${request.mdFilename}`;
     const encodedPath = mdPath.split('/').map(encodeURIComponent).join('/');
     const url = `${baseUrl}/vault/${encodedPath}`;
     
