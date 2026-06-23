@@ -387,7 +387,13 @@
             content += `Постер: "[[${posterName}]]"\n`;
 
             content += '---\n';
-            content += `![[${posterName}]]\n`;
+            content += `![[${posterName}]]\n\n`;
+            
+            // Добавляем плеер
+            content += '## Плеер\n';
+            content += '```hdrezka\n';
+            content += window.location.href + '\n';
+            content += '```\n';
 
             // Ищем постер
             const imgElement = document.querySelector('img[itemprop="image"]');
