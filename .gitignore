@@ -3,3 +3,6 @@
 *_files/
 .DS_Store
 !popup.html
+*.log
+scratch/
+вв
