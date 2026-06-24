@@ -59,9 +59,8 @@ Consists of two components:
 
 ### 3. HDRezka Player Plugin Installation in Obsidian
 1. In your Obsidian Vault, navigate to the `.obsidian/plugins/` folder.
-2. Create a folder named `obsidian-hdrezka-player`.
-3. Copy the files from the `obsidian-player` folder of this repository (`main.js`, `manifest.json`, `hls.min.js`) into the created folder.
-4. Restart Obsidian (or refresh the plugin list) and enable the **HDRezka Player** plugin.
+2. Simply copy the `obsidian-hdrezka-player` folder from this repository into the `plugins` folder.
+3. Restart Obsidian (or refresh the plugin list) and enable the **HDRezka Player** plugin.
 
 ---
 
@@ -69,12 +68,7 @@ Consists of two components:
 
 1. Go to any movie page on the HDrezka website (e.g., `rezka.ag/films/...`).
 2. Click the extension icon in your browser and click "Save to Obsidian" 🎬.
-3. The extension will create a note in your Vault.
-4. Inside the note, you can add the following code block:
-   \`\`\`hdrezka
-   https://rezka.ag/films/thriller/87731-dzhek-rayan-prizrachnaya-voyna-2026.html
-   \`\`\`
-   The plugin will turn this link into a fully functional video player!
+3. The extension will create a note in your Vault and **automatically** embed the movie's video player inside it. You just need to open the note in Obsidian and enjoy watching!
 
 ---
 
