@@ -185,8 +185,12 @@ async function deleteFile(request) {
     });
     
     if (!response.ok) {
-        const errText = await response.text();
-        throw new Error(`Ошибка удаления (${response.status}): ${errText}`);
+        if (response.status === 404) {
+            console.warn(`Файл уже удален в Obsidian, удаляем из истории расширения (${response.status})`);
+        } else {
+            const errText = await response.text();
+            throw new Error(`Ошибка удаления (${response.status}): ${errText}`);
+        }
     }
     
     // Удаляем из истории
