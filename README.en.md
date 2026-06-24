@@ -78,3 +78,14 @@ By default, the extension saves movies to the following path:
 - The poster is saved in `Фильмы и Сериалы/Фильмы/Постеры/...`
 
 *(The base folder can be easily changed in the extension settings)*
+
+## 📸 Screenshots
+
+1. **Player inside a note**
+<img width="600" alt="Player Screenshot" src="https://github.com/user-attachments/assets/b5ccaa1d-b730-4cf1-9c7a-c8115117a777" />
+
+2. **Movies database**
+<img width="600" alt="Database Screenshot" src="https://github.com/user-attachments/assets/56960d08-7f27-472a-b880-320226d00229" />
+
+3. **Extension menu**
+<img width="250" alt="Extension Menu Screenshot" src="https://github.com/user-attachments/assets/0e73b2bf-f99f-4f1e-ab1f-ef7f54823a80" />
