@@ -78,11 +78,11 @@
 *(Базовую папку можно легко поменять в настройках расширения)*
 
 Скрины:
-1. Меню расширения
-<img width="1040" height="776" alt="Снимок экрана 2026-06-25 в 01 14 16" src="https://github.com/user-attachments/assets/b5ccaa1d-b730-4cf1-9c7a-c8115117a777" />
+1. Плеер в заметке
+<img width="600" alt="Снимок экрана 2026-06-25 в 01 14 16" src="https://github.com/user-attachments/assets/b5ccaa1d-b730-4cf1-9c7a-c8115117a777" />
 
 2. База фильмов
-<img width="1326" height="879" alt="Снимок экрана 2026-06-25 в 01 04 53" src="https://github.com/user-attachments/assets/56960d08-7f27-472a-b880-320226d00229" />
+<img width="600" alt="Снимок экрана 2026-06-25 в 01 04 53" src="https://github.com/user-attachments/assets/56960d08-7f27-472a-b880-320226d00229" />
 
-3. Плеер в заметке
-<img width="344" height="488" alt="Снимок экрана 2026-06-25 в 01 01 48" src="https://github.com/user-attachments/assets/0e73b2bf-f99f-4f1e-ab1f-ef7f54823a80" />
+3. Меню расширения
+<img width="250" alt="Снимок экрана 2026-06-25 в 01 01 48" src="https://github.com/user-attachments/assets/0e73b2bf-f99f-4f1e-ab1f-ef7f54823a80" />
