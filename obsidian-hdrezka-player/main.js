@@ -118,6 +118,9 @@ module.exports = class HDRezkaPlayerPlugin extends Plugin {
                     });
 
                     const streamData = streamRes.json;
+                    if (streamData && streamData.url === false) {
+                        throw new Error("Видео недоступно для вашего региона. Пожалуйста, включите VPN или смените IP-адрес.");
+                    }
                     if (!streamData || !streamData.url) {
                         throw new Error("Ответ сервера: " + JSON.stringify(streamData || streamRes.text));
                     }
