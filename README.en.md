@@ -2,53 +2,85 @@
 
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=black)
 ![Google Chrome](https://img.shields.io/badge/Google_Chrome-4285F4?logo=google-chrome&logoColor=white)
-![Firefox](https://img.shields.io/badge/Firefox-FF7139?logo=firefox&logoColor=white)
 ![Obsidian](https://img.shields.io/badge/Obsidian-483699?logo=obsidian&logoColor=white)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white)
 
+<br>
+
+🇷🇺 [Читать на русском](./README.md)
+
 </div>
 
-# Obsidian Film Saver
+# Obsidian Film Saver + HDRezka Player 🍿
 
-A Google Chrome extension that allows you to save movies and series from **HDrezka** (rezka.ag) directly to your **Obsidian** knowledge base with a single click.
+A comprehensive solution for integrating movies and TV series from **HDrezka (rezka.ag)** into your **Obsidian** knowledge base. 
 
-## Features
-- Automatically scrapes movie/series metadata (title, year, genres, countries, directors, actors, IMDb & Kinopoisk ratings).
-- Beautiful custom modal to input your personal rating.
-- Downloads the movie poster/cover automatically.
-- Seamlessly sends the `.md` note and poster file directly to your Obsidian Vault via local network.
+Consists of two components:
+1. **Chrome Extension (Obsidian Film Saver)**: Allows you to save a movie page with all metadata (title, year, genres, ratings) and cover art directly to your Vault with one click.
+2. **Obsidian Plugin (HDRezka Player)**: Allows you to **watch** saved movies directly inside Obsidian notes in a beautiful built-in player (supports HLS, quality selection, voiceovers, and speed control).
 
-## How it works?
-The extension utilizes the **Local REST API** plugin to communicate with Obsidian directly. You click the button on the site -> the extension generates a note -> sends the files straight to your Obsidian Vault.
+---
 
-## Installation & Setup
+## 🌟 Features
+
+### Browser Extension
+- 📥 Automatic extraction of movie/series data (title, year, genres, countries, directors, actors, IMDb and Kinopoisk ratings).
+- 🎨 Beautiful Glassmorphism popup UI for adding personal ratings and viewing recently saved movies.
+- 🖼 Downloading posters (covers) in the required format.
+- 🚀 Direct seamless upload of the `.md` note and poster file to your Vault over the local network via Local REST API.
+
+### Obsidian Plugin (HDRezka Player)
+- 🍿 **Built-in Player**: Play videos directly in Obsidian using a rezka.ag link.
+- 🎭 **Voiceover Selection**: Switch translations/voiceovers directly in the player without reloading the page.
+- 📺 **Quality Selection**: Dynamic quality switching (from 360p up to 1080p).
+- 🚀 **Speed Control**: Speed up or slow down playback.
+- 💅 **Premium Design**: Custom dark interface with purple accents, blur effects, and a convenient progress bar.
+- 🛡 **CORS Bypass**: Built-in local proxy server ensures uninterrupted video loading even with strict network restrictions.
+
+---
+
+## ⚙️ Installation and Setup
 
 ### 1. Obsidian Setup
 1. Open Obsidian and go to **Settings** -> **Community plugins**.
 2. Turn off "Restricted mode".
-3. Click **Browse** and search for `Local REST API`.
-4. Install and enable it.
-5. Go to the settings of the Local REST API plugin and:
+3. Click the **Browse** button and find the `Local REST API` plugin. Install and enable it.
+4. In the Local REST API settings:
    - **Enable:** `Enable Non-Encrypted (HTTP) Server`.
-   - **Copy the `API Key`** provided there.
+   - **Copy the `API Key`** (copy only the key itself, without the word `Bearer`).
 
-### 2. Extension Installation
-1. Download the code of this repository.
-2. In your browser (Google Chrome, Edge, Brave), go to: `chrome://extensions/`.
-3. Enable **Developer mode** in the top right corner.
-4. Click **Load unpacked** and select the folder containing this extension.
+### 2. Browser Extension Installation
+1. Download this repository.
+2. In Chrome, go to: `chrome://extensions/`.
+3. Enable **"Developer mode"**.
+4. Click **"Load unpacked"** and select the root folder of the repository.
+5. Right-click the extension icon -> **"Options"**.
+6. Paste your `API Key` from Obsidian and save.
 
-### 3. Extension Setup
-1. Right-click the extension icon on your taskbar (or find it on the extensions page) and click **Options**.
-2. Paste the **API Key** you copied from Obsidian.
-3. **IMPORTANT:** Make sure the "Server Address" field is exactly `http://127.0.0.1:27123` (ending with 3, as this is the HTTP server port).
-4. Click "Save".
+### 3. HDRezka Player Plugin Installation in Obsidian
+1. In your Obsidian Vault, navigate to the `.obsidian/plugins/` folder.
+2. Create a folder named `obsidian-hdrezka-player`.
+3. Copy the files from the `obsidian-player` folder of this repository (`main.js`, `manifest.json`, `hls.min.js`) into the created folder.
+4. Restart Obsidian (or refresh the plugin list) and enable the **HDRezka Player** plugin.
 
-Done! Now visit any movie page on HDrezka, refresh it, and click "Сохранить в Obsidian" (Save to Obsidian).
+---
 
-## Obsidian Folder Structure
-By default, the extension saves movies to:
+## 💻 Usage
+
+1. Go to any movie page on the HDrezka website (e.g., `rezka.ag/films/...`).
+2. Click the extension icon in your browser and click "Save to Obsidian" 🎬.
+3. The extension will create a note in your Vault.
+4. Inside the note, you can add the following code block:
+   \`\`\`hdrezka
+   https://rezka.ag/films/thriller/87731-dzhek-rayan-prizrachnaya-voyna-2026.html
+   \`\`\`
+   The plugin will turn this link into a fully functional video player!
+
+---
+
+## 📁 Folder Structure in Obsidian
+By default, the extension saves movies to the following path:
 - `Фильмы и Сериалы/Фильмы/Movie Name (Year).md`
-- Posters are saved to `Фильмы и Сериалы/Фильмы/Постеры/...`
+- The poster is saved in `Фильмы и Сериалы/Фильмы/Постеры/...`
 
-You can easily change the base folder (`Фильмы и Сериалы`) in the extension options.
+*(The base folder can be easily changed in the extension settings)*
